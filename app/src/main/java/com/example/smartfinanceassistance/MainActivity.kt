@@ -36,21 +36,5 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity", "퀴즈 삽입 완료")
             }
         }
-
-        val button = findViewById<Button>(R.id.buttonSaveTestScore)
-        button.setOnClickListener {
-            Log.d("FirestoreTest", "버튼 클릭됨")
-
-            val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val nickname = prefs.getString("nickname", null)
-            Log.d("FirestoreTest", "nickname: $nickname")
-
-            if (nickname == null) {
-                Log.e("FirestoreTest", "nickname 없음. 저장 중단됨")
-            } else {
-                FirestoreHelper.saveScore(this, "voicephishing", 4)
-            }
-        }
     }
-
 }

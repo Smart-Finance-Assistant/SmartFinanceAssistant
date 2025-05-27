@@ -2,12 +2,50 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/quizFragment">
+    app:startDestination="@id/homeFragment">
 
+    <!-- 홈 화면 -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.smartfinanceassistance.ui.main.HomeFragment"
+        android:label="홈">
+
+        <!-- 홈에서 이동 가능한 모든 destination 연결 -->
+        <action
+            android:id="@+id/action_homeFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_casesFragment"-->
+<!--            app:destination="@id/casesFragment" />-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_analysisFragment"-->
+<!--            app:destination="@id/analysisFragment" />-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_mapFragment"-->
+<!--            app:destination="@id/mapFragment" />-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_callFragment"-->
+<!--            app:destination="@id/callFragment" />-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_galleryFragment"-->
+<!--            app:destination="@id/galleryFragment" />-->
+    </fragment>
+
+    <!-- destination 프래그먼트들 -->
     <fragment
         android:id="@+id/quizFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.QuizFragment"
-        android:label="Quiz" >
+        android:label="Quiz">
+        <!-- 퀴즈 다 풀면 자동으로 이동-->
         <action
             android:id="@+id/action_quizFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
@@ -17,4 +55,29 @@
         android:id="@+id/resultFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.ResultFragment"
         android:label="Result" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/casesFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.cases.CasesFragment"-->
+<!--        android:label="사례" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/analysisFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.analysis.AnalysisFragment"-->
+<!--        android:label="분석" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/mapFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.map.MapFragment"-->
+<!--        android:label="지도" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/callFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.call.CallFragment"-->
+<!--        android:label="전화" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/galleryFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.gallery.GalleryFragment"-->
+<!--        android:label="갤러리" />-->
 </navigation>
