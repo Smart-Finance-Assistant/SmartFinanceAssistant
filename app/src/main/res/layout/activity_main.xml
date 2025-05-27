@@ -13,4 +13,14 @@
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true" />
 
+    <Button
+        android:id="@+id/buttonSaveTestScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Firestore 점수 저장 테스트"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="32dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
