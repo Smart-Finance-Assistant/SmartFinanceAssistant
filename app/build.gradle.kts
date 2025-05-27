@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("androidx.navigation.safeargs.kotlin") // ✅ 버전 없이 사용 (project-level에서 지정했기 때문)
     id("org.jetbrains.kotlin.kapt")
 }
 

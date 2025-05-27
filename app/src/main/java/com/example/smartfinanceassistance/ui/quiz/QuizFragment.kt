@@ -23,8 +23,20 @@ class QuizFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[QuizViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[QuizViewModel::class.java]
         viewModel.loadQuizzes()
+
+        // O/X 버튼 클릭 리스너 연결
+        view.findViewById<Button>(R.id.buttonTrue).setOnClickListener {
+            Log.d("QuizFragment", "O 버튼 클릭됨")
+            handleAnswer(true)
+        }
+
+        view.findViewById<Button>(R.id.buttonFalse).setOnClickListener {
+            Log.d("QuizFragment", "X 버튼 클릭됨")
+            handleAnswer(false)
+        }
+
 
         viewModel.quizzes.observe(viewLifecycleOwner) {
             Log.d("QuizFragment", "퀴즈 옵저빙됨: ${it.size}개")

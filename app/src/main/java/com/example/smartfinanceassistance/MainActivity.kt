@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.smartfinanceassistance.data.db.AppDatabase
 import com.example.smartfinanceassistance.ui.theme.SmartFinanceAssistanceTheme
+import com.example.smartfinanceassistance.util.CaseSeeder
 import com.example.smartfinanceassistance.util.QuizSeeder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,14 +26,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         GlobalScope.launch {
-            val dao = AppDatabase.getDatabase(applicationContext).quizDao()
-            val size = dao.getAll().size
-            Log.d("MainActivity", "현재 퀴즈 수: $size")
-            if (size == 0) {
-                dao.insertAll(QuizSeeder.getSample())
+            val db = AppDatabase.getDatabase(applicationContext)
+
+            val quizDao = db.quizDao()
+            if (quizDao.getAll().isEmpty()) {
+                quizDao.insertAll(QuizSeeder.getSample())
                 Log.d("MainActivity", "퀴즈 삽입 완료")
             }
+
+            val caseDao = db.caseDao()
+            val sampleCases = CaseSeeder.getSample()
+
+            val distinctTypes = sampleCases.map { it.type }.distinct()
+
+            for (type in distinctTypes) {
+                if (caseDao.getCasesByType(type).isEmpty()) {
+                    val casesToInsert = sampleCases.filter { it.type == type }
+                    caseDao.insertAll(casesToInsert)
+                    Log.d("MainActivity", "[$type] 사례 삽입 완료")
+                }
+            }
         }
+
     }
 
 }
