@@ -30,10 +30,10 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
         }
 
-//        view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
-//        }
-//
+       view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
+        }
+
 //        view.findViewById<CardView>(R.id.cardAnalysis).setOnClickListener {
 //            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
 //        }
