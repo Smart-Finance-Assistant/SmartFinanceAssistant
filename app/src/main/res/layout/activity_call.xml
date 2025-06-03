@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_call"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/btn_call_police"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="경찰서 전화 연결 (112)" />
+
+    <Button
+        android:id="@+id/btn_call_fss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="금융감독원 전화 연결 (1332)"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

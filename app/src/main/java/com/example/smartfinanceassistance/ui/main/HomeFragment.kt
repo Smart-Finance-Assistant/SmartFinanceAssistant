@@ -1,9 +1,10 @@
-// HomeFragment.kt — 카드뷰 6개 전체 연결
-
 package com.example.smartfinanceassistance.ui.main
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.smartfinanceassistance.R
+import com.example.smartfinanceassistance.externalApp.CallActivity
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
@@ -30,6 +32,12 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
         }
 
+        // 외부 앱 연결: 전화
+        view.findViewById<CardView>(R.id.cardCall).setOnClickListener {
+            val intent = Intent(requireContext(), CallActivity::class.java)
+            startActivity(intent)
+        }
+
 //        view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
 //            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
 //        }
@@ -42,9 +50,6 @@ class HomeFragment : Fragment() {
 //            findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
 //        }
 //
-//        view.findViewById<CardView>(R.id.cardCall).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_callFragment)
-//        }
 //
 //        view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
 //            findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)
