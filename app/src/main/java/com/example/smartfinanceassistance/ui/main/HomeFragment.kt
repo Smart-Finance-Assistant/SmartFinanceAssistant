@@ -38,6 +38,11 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 외부 앱 연결: 지도
+        view.findViewById<CardView>(R.id.cardMap).setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
+        }
+
 //        view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
 //            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
 //        }
@@ -46,9 +51,6 @@ class HomeFragment : Fragment() {
 //            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
 //        }
 //
-//        view.findViewById<CardView>(R.id.cardMap).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
-//        }
 //
 //
 //        view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
