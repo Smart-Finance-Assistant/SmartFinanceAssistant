@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_homeFragment_to_casesFragment"
             app:destination="@id/caseTypeListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_weakTypeAnalysisFragment"
+            app:destination="@id/weakTypeAnalysisFragment" />
 <!--        <action-->
 <!--            android:id="@+id/action_homeFragment_to_casesFragment"-->
 <!--            app:destination="@id/casesFragment" />-->
@@ -101,8 +104,17 @@
             android:id="@+id/action_caseListFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
-
-    <!-- Home → 유형 선택 -->
+    <fragment
+        android:id="@+id/weakTypeAnalysisFragment"
+        android:name="com.example.smartfinanceassistance.ui.analysis.WeakTypeAnalysisFragment"
+        android:label="내 취약유형 분석">
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_caseListFragment"
+            app:destination="@id/caseListFragment" />
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 </navigation>
 
