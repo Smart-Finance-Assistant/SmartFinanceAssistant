@@ -18,12 +18,19 @@
         <action
             android:id="@+id/action_homeFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+
         <action
             android:id="@+id/action_homeFragment_to_casesFragment"
             app:destination="@id/caseTypeListFragment" />
+      
         <action
             android:id="@+id/action_homeFragment_to_weakTypeAnalysisFragment"
             app:destination="@id/weakTypeAnalysisFragment" />
+      
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+
 <!--        <action-->
 <!--            android:id="@+id/action_homeFragment_to_casesFragment"-->
 <!--            app:destination="@id/casesFragment" />-->
@@ -32,13 +39,6 @@
 <!--            android:id="@+id/action_homeFragment_to_analysisFragment"-->
 <!--            app:destination="@id/analysisFragment" />-->
 
-<!--        <action-->
-<!--            android:id="@+id/action_homeFragment_to_mapFragment"-->
-<!--            app:destination="@id/mapFragment" />-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_homeFragment_to_callFragment"-->
-<!--            app:destination="@id/callFragment" />-->
 
 <!--        <action-->
 <!--            android:id="@+id/action_homeFragment_to_galleryFragment"-->
@@ -104,6 +104,7 @@
             android:id="@+id/action_caseListFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/weakTypeAnalysisFragment"
         android:name="com.example.smartfinanceassistance.ui.analysis.WeakTypeAnalysisFragment"
@@ -116,6 +117,10 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.smartfinanceassistance.externalApp.MapFragment"
+        android:label="지도" />
 </navigation>
 
 <!--    <fragment-->
@@ -128,15 +133,6 @@
 <!--        android:name="com.example.smartfinanceassistance.ui.analysis.AnalysisFragment"-->
 <!--        android:label="분석" />-->
 
-<!--    <fragment-->
-<!--        android:id="@+id/mapFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.map.MapFragment"-->
-<!--        android:label="지도" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/callFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.call.CallFragment"-->
-<!--        android:label="전화" />-->
 
 <!--    <fragment-->
 <!--        android:id="@+id/galleryFragment"-->
