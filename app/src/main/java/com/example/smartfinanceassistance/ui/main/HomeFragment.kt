@@ -32,6 +32,14 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_quizFragment)
         }
 
+       view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
+        }
+       
+        view.findViewById<CardView>(R.id.cardAnalysis).setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_weakTypeAnalysisFragment)
+        }
+        
         // 외부 앱 연결: 전화
         view.findViewById<CardView>(R.id.cardCall).setOnClickListener {
             val intent = Intent(requireContext(), CallActivity::class.java)
@@ -43,10 +51,6 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
         }
 
-//        view.findViewById<CardView>(R.id.cardCases).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_casesFragment)
-//        }
-//
 //        view.findViewById<CardView>(R.id.cardAnalysis).setOnClickListener {
 //            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
 //        }

@@ -11,6 +11,7 @@ class WeakTypePagerAdapter(
     override fun getItemCount(): Int = types.size
 
     override fun createFragment(position: Int): Fragment {
-        return WeakTypeSlideFragment.newInstance(types[position])
+        val isLast = position == types.size - 1
+        return WeakTypeSlideFragment.newInstance(types[position], isLast)
     }
 }

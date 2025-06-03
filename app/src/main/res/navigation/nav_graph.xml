@@ -20,6 +20,14 @@
             app:destination="@id/resultFragment" />
 
         <action
+            android:id="@+id/action_homeFragment_to_casesFragment"
+            app:destination="@id/caseTypeListFragment" />
+      
+        <action
+            android:id="@+id/action_homeFragment_to_weakTypeAnalysisFragment"
+            app:destination="@id/weakTypeAnalysisFragment" />
+      
+        <action
             android:id="@+id/action_homeFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
 
@@ -66,8 +74,48 @@
             app:argType="string[]"
             android:defaultValue="@null"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_weakTypePagerFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/caseTypeListFragment"
+        android:name="com.example.smartfinanceassistance.ui.cases.CaseTypeListFragment"
+        android:label="유형 선택">
+        <action
+            android:id="@+id/action_caseTypeListFragment_to_caseListFragment"
+            app:destination="@id/caseListFragment">
+            <argument
+                android:name="caseType"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/caseListFragment"
+        android:name="com.example.smartfinanceassistance.ui.cases.CaseListFragment"
+        android:label="사례 리스트">
+        <argument
+            android:name="caseType"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_caseListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weakTypeAnalysisFragment"
+        android:name="com.example.smartfinanceassistance.ui.analysis.WeakTypeAnalysisFragment"
+        android:label="내 취약유형 분석">
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_caseListFragment"
+            app:destination="@id/caseListFragment" />
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/mapFragment"
