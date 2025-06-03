@@ -19,7 +19,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "quiz_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // 개발 중이면 이걸로 충분함
+                    .build()
             }
             return INSTANCE!!
         }

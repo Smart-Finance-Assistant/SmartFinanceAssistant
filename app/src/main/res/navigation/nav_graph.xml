@@ -71,7 +71,6 @@
             app:nullable="true" />
     </fragment>
 </navigation>
-        android:label="Result" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/casesFragment"-->
@@ -97,4 +96,3 @@
 <!--        android:id="@+id/galleryFragment"-->
 <!--        android:name="com.example.smartfinanceassistance.ui.gallery.GalleryFragment"-->
 <!--        android:label="갤러리" />-->
-</navigation>
