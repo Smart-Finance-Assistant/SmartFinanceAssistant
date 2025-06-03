@@ -54,6 +54,23 @@
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.ResultFragment"
+        android:label="Result" >
+
+        <action
+            android:id="@+id/action_resultFragment_to_weakTypePagerFragment"
+            app:destination="@id/weakTypePagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weakTypePagerFragment"
+        android:name="com.example.smartfinanceassistance.ui.quiz.WeakTypePagerFragment"
+        android:label="취약 유형 슬라이드">
+        <argument
+            android:name="weakTypes"
+            app:argType="string[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+</navigation>
         android:label="Result" />
 
 <!--    <fragment-->

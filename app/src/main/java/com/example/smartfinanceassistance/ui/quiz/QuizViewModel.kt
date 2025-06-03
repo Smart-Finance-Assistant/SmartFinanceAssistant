@@ -34,4 +34,24 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         userAnswers.add(Pair(quiz, choice))
     }
 
+    fun getWeakTypes(): List<String> {
+        // 유형별로 정답 수/전체 수 카운트용 맵
+        val stats = mutableMapOf<String, Pair<Int, Int>>()  // (정답 수, 전체 수)
+
+        for ((quiz, userChoice) in userAnswers) {
+            val type = quiz.type
+            val isCorrect = quiz.answer == userChoice
+
+            val (correct, total) = stats[type] ?: Pair(0, 0)
+            val newCorrect = if (isCorrect) correct + 1 else correct
+            stats[type] = Pair(newCorrect, total + 1)
+        }
+
+        // 정답률 40% 이하인 유형만 필터링
+        return stats.filter { (_, result) ->
+            val (correct, total) = result
+            total > 0 && (correct.toDouble() / total.toDouble() <= 0.4)
+        }.keys.toList()
+    }
+
 }
