@@ -1,7 +1,9 @@
 package com.example.smartfinanceassistance
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.smartfinanceassistance.data.db.AppDatabase
 import com.example.smartfinanceassistance.ui.theme.SmartFinanceAssistanceTheme
 import com.example.smartfinanceassistance.util.CaseSeeder
+import com.example.smartfinanceassistance.util.FirestoreHelper
 import com.example.smartfinanceassistance.util.QuizSeeder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -49,5 +52,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12700452010",
+    "project_id": "smartfinanceassistance-f3748",
+    "storage_bucket": "smartfinanceassistance-f3748.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12700452010:android:7611109dfbd559ed6f3cd3",
+        "android_client_info": {
+          "package_name": "com.example.smartfinanceassistance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQi4vlpNt2P6e8EUUh8aDnXwMWLdlH34s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
