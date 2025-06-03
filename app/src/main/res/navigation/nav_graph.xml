@@ -88,11 +88,6 @@
 <!--        android:label="지도" />-->
 
 <!--    <fragment-->
-<!--        android:id="@+id/callFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.call.CallFragment"-->
-<!--        android:label="전화" />-->
-
-<!--    <fragment-->
 <!--        android:id="@+id/galleryFragment"-->
 <!--        android:name="com.example.smartfinanceassistance.ui.gallery.GalleryFragment"-->
 <!--        android:label="갤러리" />-->
