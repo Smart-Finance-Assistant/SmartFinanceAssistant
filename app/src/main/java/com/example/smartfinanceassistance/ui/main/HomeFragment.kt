@@ -72,17 +72,17 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
         }
 
-//        view.findViewById<CardView>(R.id.cardAnalysis).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
-//        }
-//
-//
-//
         view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
             val intent = Intent(requireContext(), GallerySelectActivity::class.java)
             startActivity(intent)
         }
-        
+
+        // 🆕 게시판 카드 클릭
+        view.findViewById<CardView>(R.id.cardBoard).setOnClickListener {
+            Log.d("HomeFragment", "게시판 카드 클릭")
+            findNavController().navigate(R.id.action_homeFragment_to_boardListFragment)
+        }
+
         return view
     }
 
