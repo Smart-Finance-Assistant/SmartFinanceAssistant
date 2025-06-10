@@ -24,6 +24,15 @@ class QuizFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(requireActivity())[QuizViewModel::class.java]
+
+        // 🆕 안전장치: 비정상적으로 많은 데이터가 있으면 초기화
+        if (viewModel.userAnswers.size > 20) {
+            Log.w("QuizFragment", "비정상적인 데이터 감지 (${viewModel.userAnswers.size}개) - 강제 초기화")
+            viewModel.resetQuiz()
+        }
+
+        Log.d("QuizFragment", "퀴즈 시작 - 현재 답변 개수: ${viewModel.userAnswers.size}")
+
         viewModel.loadQuizzes()
 
         // O/X 버튼 클릭 리스너 연결
@@ -37,7 +46,6 @@ class QuizFragment : androidx.fragment.app.Fragment() {
             handleAnswer(false)
         }
 
-
         viewModel.quizzes.observe(viewLifecycleOwner) {
             Log.d("QuizFragment", "퀴즈 옵저빙됨: ${it.size}개")
             quizzes = it
@@ -45,25 +53,35 @@ class QuizFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-
     private fun showQuestion() {
         if (currentIndex < quizzes.size) {
             val question = quizzes[currentIndex].question
-            Log.d("QuizFragment", "표시할 문제: $question")
-            view?.findViewById<TextView>(R.id.questionText)?.text = question
+            Log.d("QuizFragment", "문제 ${currentIndex + 1}/20: $question")
+
+            // 🆕 진행률 표시 (선택사항)
+            view?.findViewById<TextView>(R.id.questionText)?.text =
+                "${currentIndex + 1}/20\n\n$question"
         } else {
-            Log.d("QuizFragment", "모든 문제 끝. 결과 화면 이동")
+            Log.d("QuizFragment", "모든 문제 완료 - 총 답변: ${viewModel.userAnswers.size}개")
             navigateToResult()
         }
     }
 
     private fun handleAnswer(choice: Boolean) {
-        viewModel.recordAnswer(quizzes[currentIndex], choice)
-        currentIndex++
-        showQuestion()
+        if (currentIndex < quizzes.size) {
+            val currentQuiz = quizzes[currentIndex]
+            viewModel.recordAnswer(currentQuiz, choice)
+
+            Log.d("QuizFragment", "답변 기록 완료: ${currentQuiz.type} - ${currentQuiz.question} -> $choice")
+            Log.d("QuizFragment", "현재 진행률: ${viewModel.userAnswers.size}/20")
+
+            currentIndex++
+            showQuestion()
+        }
     }
 
     private fun navigateToResult() {
+        Log.d("QuizFragment", "결과 화면으로 이동 - 최종 답변 개수: ${viewModel.userAnswers.size}")
         findNavController().navigate(R.id.action_quizFragment_to_resultFragment)
     }
 }

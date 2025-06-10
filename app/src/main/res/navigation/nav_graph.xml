@@ -22,11 +22,11 @@
         <action
             android:id="@+id/action_homeFragment_to_casesFragment"
             app:destination="@id/caseTypeListFragment" />
-      
+
         <action
             android:id="@+id/action_homeFragment_to_weakTypeAnalysisFragment"
             app:destination="@id/weakTypeAnalysisFragment" />
-      
+
         <action
             android:id="@+id/action_homeFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
@@ -51,15 +51,25 @@
             app:destination="@id/resultFragment" />
     </fragment>
 
+    <!-- 🔽 결과 화면 (중복 제거하고 하나로 통합) -->
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.ResultFragment"
-        android:label="Result" >
+        android:label="Result">
 
         <action
             android:id="@+id/action_resultFragment_to_weakTypePagerFragment"
             app:destination="@id/weakTypePagerFragment" />
+
+        <action
+            android:id="@+id/action_resultFragment_to_weakTypeAnalysisFragment"
+            app:destination="@id/weakTypeAnalysisFragment" />
+
+        <action
+            android:id="@+id/action_resultFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/weakTypePagerFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.WeakTypePagerFragment"
@@ -100,13 +110,16 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
+    <!-- 🔽 취약 유형 분석 화면 (패키지 경로 수정) -->
     <fragment
         android:id="@+id/weakTypeAnalysisFragment"
         android:name="com.example.smartfinanceassistance.ui.analysis.WeakTypeAnalysisFragment"
         android:label="내 취약유형 분석">
+
         <action
             android:id="@+id/action_weakTypeAnalysisFragment_to_caseListFragment"
             app:destination="@id/caseListFragment" />
+
         <action
             android:id="@+id/action_weakTypeAnalysisFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
