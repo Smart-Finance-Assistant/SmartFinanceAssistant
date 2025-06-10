@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,13 +24,11 @@ class WeakTypeAnalysisFragment : Fragment(R.layout.fragment_weak_type_analysis) 
 
         val container = view.findViewById<LinearLayout>(R.id.weakTypeContainer)
         val backButton = view.findViewById<Button>(R.id.buttonBackToHome)
-        val titleText = view.findViewById<TextView>(R.id.titleText)
         val weakTypeTitle = view.findViewById<TextView>(R.id.weakTypeTitle)
 
         // 닉네임 가져오기
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val nickname = prefs.getString("nickname", "사용자") ?: "사용자"
-        titleText.text = "${nickname}님, 오늘은 금융사기 조심하세요!"
 
         // QuizViewModel에서 실제 데이터 가져오기 시도
         try {
@@ -168,47 +167,60 @@ class WeakTypeAnalysisFragment : Fragment(R.layout.fragment_weak_type_analysis) 
         container.addView(noDataView)
     }
 
+    // 🎨 CardView로 그림자 효과 적용
     private fun createScoreView(type: String, correct: Int, total: Int, isWeak: Boolean): View {
-        val scoreLayout = LinearLayout(requireContext()).apply {
-            orientation = LinearLayout.HORIZONTAL
-            setPadding(32, 24, 32, 24)
-            setBackgroundColor(resources.getColor(android.R.color.white, null))
+        // CardView 생성 (그림자 효과)
+        val cardView = CardView(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(0, 0, 0, 16)
+                setMargins(0, 0, 0, 12) // 아래쪽 간격
             }
+            radius = 12f
+            cardElevation = 6f
+            useCompatPadding = true // 그림자를 위한 패딩
+        }
+
+        // 내부 레이아웃
+        val scoreLayout = LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(24, 20, 24, 20)
+            setBackgroundColor(resources.getColor(android.R.color.white, null))
         }
 
         // 유형 이름
         val typeNameView = TextView(requireContext()).apply {
             text = type
-            textSize = 18f
+            textSize = 16f
             setTextColor(resources.getColor(android.R.color.black, null))
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            setPadding(0, 8, 16, 8)
         }
 
         // 점수 표시
         val scoreView = TextView(requireContext()).apply {
             text = "${correct}/${total}"
-            textSize = 18f
+            textSize = 16f
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            setPadding(16, 8, 0, 8)
 
             setTextColor(
                 if (isWeak) resources.getColor(android.R.color.holo_red_light, null)
                 else resources.getColor(android.R.color.black, null)
             )
+
+            // 취약한 유형은 굵게 표시
+            if (isWeak) {
+                setTypeface(null, android.graphics.Typeface.BOLD)
+            }
         }
 
         scoreLayout.addView(typeNameView)
         scoreLayout.addView(scoreView)
+        cardView.addView(scoreLayout)
 
-        return scoreLayout
+        return cardView
     }
 }
