@@ -51,6 +51,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:19.2.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // google ml kit
+    implementation ("com.google.mlkit:text-recognition-korean:16.0.1")
+
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation(libs.androidx.navigation.fragment.ktx)

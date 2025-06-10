@@ -38,11 +38,6 @@
 <!--        <action-->
 <!--            android:id="@+id/action_homeFragment_to_analysisFragment"-->
 <!--            app:destination="@id/analysisFragment" />-->
-
-
-<!--        <action-->
-<!--            android:id="@+id/action_homeFragment_to_galleryFragment"-->
-<!--            app:destination="@id/galleryFragment" />-->
     </fragment>
 
     <!-- destination 프래그먼트들 -->
@@ -132,9 +127,3 @@
 <!--        android:id="@+id/analysisFragment"-->
 <!--        android:name="com.example.smartfinanceassistance.ui.analysis.AnalysisFragment"-->
 <!--        android:label="분석" />-->
-
-
-<!--    <fragment-->
-<!--        android:id="@+id/galleryFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.gallery.GalleryFragment"-->
-<!--        android:label="갤러리" />-->
