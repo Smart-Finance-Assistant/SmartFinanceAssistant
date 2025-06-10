@@ -5,36 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="#F5F5F5">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- 인사말 -->
-        <TextView
-            android:id="@+id/textGreeting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="000님,\n오늘도 금융사기 조심하세요!"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:layout_marginBottom="8dp" />
-
-        <!-- 경고 안내 -->
-        <TextView
-            android:id="@+id/textWarning"
+        <!-- 상단 인사말 카드 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="⚠️ 취약 유형 표시(표)"
-            android:background="#FFF3CD"
-            android:textColor="#8A4B00"
-            android:padding="12dp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/greeting_card_background"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textGreeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="ss님,\n오늘도 금융사기 조심하세요!"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- 취약 유형 분석 카드 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/warning_card_background"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="⚠️"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textWeakType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="취약 유형 분석(표)"
+                android:textColor="#F57C00"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <!-- 카드 메뉴 2열 3행 -->
         <androidx.gridlayout.widget.GridLayout
@@ -45,7 +71,7 @@
             app:alignmentMode="alignMargins"
             app:useDefaultMargins="true">
 
-            <!-- 카드들: 이미지 전체화 -->
+            <!-- 금융사기 퀴즈 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardQuiz"
                 android:layout_width="0dp"
@@ -62,6 +88,7 @@
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
+            <!-- 유형별 사례 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCases"
                 android:layout_width="0dp"
@@ -78,6 +105,7 @@
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
+            <!-- 내 취약유형 분석 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardAnalysis"
                 android:layout_width="0dp"
@@ -94,6 +122,7 @@
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
+            <!-- 지도 보기 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardMap"
                 android:layout_width="0dp"
@@ -110,6 +139,7 @@
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
+            <!-- 전화하기 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCall"
                 android:layout_width="0dp"
@@ -126,6 +156,7 @@
                     android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
+            <!-- 갤러리 분석 카드 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardGallery"
                 android:layout_width="0dp"

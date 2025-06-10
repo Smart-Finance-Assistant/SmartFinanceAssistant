@@ -29,7 +29,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     fun recordAnswer(quiz: QuizEntity, choice: Boolean) {
         userAnswers.add(Pair(quiz, choice))
     }
@@ -54,4 +53,47 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }.keys.toList()
     }
 
+    // 🆕 모든 유형별 점수 반환
+    fun getAllTypeScores(): List<Map<String, Any>> {
+        val stats = mutableMapOf<String, Pair<Int, Int>>()  // (정답 수, 전체 수)
+
+        for ((quiz, userChoice) in userAnswers) {
+            val type = quiz.type
+            val isCorrect = quiz.answer == userChoice
+
+            val (correct, total) = stats[type] ?: Pair(0, 0)
+            val newCorrect = if (isCorrect) correct + 1 else correct
+            stats[type] = Pair(newCorrect, total + 1)
+        }
+
+        return stats.map { (type, result) ->
+            val (correct, total) = result
+            val percentage = if (total > 0) (correct * 100 / total) else 0
+            mapOf(
+                "type" to type,
+                "correctCount" to correct,
+                "totalCount" to total,
+                "percentage" to percentage,
+                "isWeak" to (percentage <= 40)
+            )
+        }
+    }
+
+    // 🆕 가장 취약한 유형 하나만 반환 (정답률이 가장 낮은 것)
+    fun getMostWeakType(): Map<String, Any>? {
+        val allScores = getAllTypeScores()
+        return allScores.filter { it["isWeak"] as Boolean }
+            .minByOrNull { it["percentage"] as Int }
+    }
+    // 🆕 이 메서드를 추가하세요!
+    fun resetQuiz() {
+        userAnswers.clear()
+        Log.d("QuizViewModel", "퀴즈 데이터 초기화됨 - 이전 답변 삭제")
+    }
+    // 🆕 전체 정답률 계산
+    fun getOverallScore(): Pair<Int, Int> {
+        val correct = userAnswers.count { (quiz, userChoice) -> quiz.answer == userChoice }
+        val total = userAnswers.size
+        return Pair(correct, total)
+    }
 }

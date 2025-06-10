@@ -21,34 +21,59 @@ class ResultFragment : Fragment(R.layout.fragment_result) {
 
         viewModel = ViewModelProvider(requireActivity())[QuizViewModel::class.java]
 
-        val answers = viewModel.userAnswers
-        val correct = answers.count { (quiz, userChoice) -> quiz.answer == userChoice }
-        val total = answers.size
+        val (correct, total) = viewModel.getOverallScore()
         val weakTypes = viewModel.getWeakTypes()
+        val mostWeakType = viewModel.getMostWeakType()
 
-        view.findViewById<TextView>(R.id.resultText).text =
-            "정답 수: $correct / $total\n정답률: ${if (total > 0) (correct * 100 / total) else 0}% \n취약 유형: $weakTypes"
+        // 결과 텍스트 업데이트
+        val resultText = if (mostWeakType != null) {
+            val type = mostWeakType["type"] as String
+            val percentage = mostWeakType["percentage"] as Int
+            "정답 수: $correct / $total\n정답률: ${if (total > 0) (correct * 100 / total) else 0}%\n가장 취약한 유형: ${type} (${percentage}%)"
+        } else {
+            "정답 수: $correct / $total\n정답률: ${if (total > 0) (correct * 100 / total) else 0}%\n취약한 유형이 없습니다!"
+        }
 
-        // 🔽 Firebase에 저장
+        view.findViewById<TextView>(R.id.resultText).text = resultText
+
+        // 🔽 Firebase에 저장 (모든 유형별 점수 저장)
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val nickname = prefs.getString("nickname", null)
         if (nickname != null) {
             val db = FirebaseFirestore.getInstance()
+            val allScores = viewModel.getAllTypeScores()
+            val scoreData = allScores.associate { scoreMap ->
+                val type = scoreMap["type"] as String
+                val correct = scoreMap["correctCount"] as Int
+                val total = scoreMap["totalCount"] as Int
+                val percentage = scoreMap["percentage"] as Int
+
+                type to mapOf(
+                    "correct" to correct,
+                    "total" to total,
+                    "percentage" to percentage
+                )
+            }
+
             db.collection("quiz_scores")
                 .document(nickname)
-                .set(mapOf("weakTypes" to weakTypes), SetOptions.merge())
-                .addOnSuccessListener { Log.d("Firebase", "취약 유형 저장 성공") }
+                .set(mapOf(
+                    "weakTypes" to weakTypes,
+                    "typeScores" to scoreData,
+                    "overallScore" to mapOf("correct" to correct, "total" to total),
+                    "timestamp" to System.currentTimeMillis()
+                ), SetOptions.merge())
+                .addOnSuccessListener { Log.d("Firebase", "퀴즈 결과 저장 성공") }
                 .addOnFailureListener { Log.e("Firebase", "저장 실패", it) }
         }
 
         view.findViewById<Button>(R.id.buttonYes).setOnClickListener {
-            val action = ResultFragmentDirections
-                .actionResultFragmentToWeakTypePagerFragment(weakTypes.toTypedArray())
-            findNavController().navigate(action)
+            // 새로운 취약 유형 분석 화면으로 이동
+            findNavController().navigate(R.id.action_resultFragment_to_weakTypeAnalysisFragment)
         }
 
         view.findViewById<Button>(R.id.buttonNo).setOnClickListener {
-            //findNavController().navigate(R.id.action_resultFragment_to_mainFragment)
+            findNavController().navigate(R.id.action_resultFragment_to_homeFragment)
         }
     }
 }
