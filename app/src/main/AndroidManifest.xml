@@ -38,7 +38,8 @@
             android:exported="true" />
 
         <activity android:name=".externalApp.CallActivity" />
-
+        <activity android:name=".image_analysis.GallerySelectActivity" />
+        <activity android:name=".image_analysis.OCRProcessingActivity" />
     </application>
 
 </manifest>

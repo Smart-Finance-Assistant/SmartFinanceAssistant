@@ -30,6 +30,14 @@
         <action
             android:id="@+id/action_homeFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_casesFragment"-->
+<!--            app:destination="@id/casesFragment" />-->
+
+<!--        <action-->
+<!--            android:id="@+id/action_homeFragment_to_analysisFragment"-->
+<!--            app:destination="@id/analysisFragment" />-->
     </fragment>
 
     <!-- destination 프래그먼트들 -->
@@ -121,5 +129,14 @@
         android:id="@+id/mapFragment"
         android:name="com.example.smartfinanceassistance.externalApp.MapFragment"
         android:label="지도" />
-
 </navigation>
+
+<!--    <fragment-->
+<!--        android:id="@+id/casesFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.cases.CasesFragment"-->
+<!--        android:label="사례" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/analysisFragment"-->
+<!--        android:name="com.example.smartfinanceassistance.ui.analysis.AnalysisFragment"-->
+<!--        android:label="분석" />-->

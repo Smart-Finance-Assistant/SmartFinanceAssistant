@@ -16,6 +16,7 @@ import com.example.smartfinanceassistance.R
 import com.example.smartfinanceassistance.externalApp.CallActivity
 import com.example.smartfinanceassistance.ui.quiz.QuizViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.smartfinanceassistance.image_analysis.GallerySelectActivity
 
 class HomeFragment : Fragment() {
 
@@ -71,6 +72,17 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_mapFragment)
         }
 
+//        view.findViewById<CardView>(R.id.cardAnalysis).setOnClickListener {
+//            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
+//        }
+//
+//
+//
+        view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
+            val intent = Intent(requireContext(), GallerySelectActivity::class.java)
+            startActivity(intent)
+        }
+        
         return view
     }
 
