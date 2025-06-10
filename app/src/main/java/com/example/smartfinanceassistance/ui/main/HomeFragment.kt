@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.smartfinanceassistance.R
 import com.example.smartfinanceassistance.externalApp.CallActivity
+import com.example.smartfinanceassistance.image_analysis.GallerySelectActivity
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
@@ -57,9 +58,10 @@ class HomeFragment : Fragment() {
 //
 //
 //
-//        view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_galleryFragment)
-//        }
+        view.findViewById<CardView>(R.id.cardGallery).setOnClickListener {
+            val intent = Intent(requireContext(), GallerySelectActivity::class.java)
+            startActivity(intent)
+        }
 
         return view
     }
