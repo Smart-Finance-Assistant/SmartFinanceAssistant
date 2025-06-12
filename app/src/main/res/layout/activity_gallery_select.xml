@@ -4,12 +4,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:background="@android:color/white"
+    android:padding="16dp">
 
+    <!-- 상단 제목 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="갤러리 분석"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- 메인 카드 -->
+    <LinearLayout
+        android:id="@+id/galleryCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="40dp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+
+        <!-- 갤러리 아이콘 컨테이너 -->
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="#FFE0B2"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🖼️"
+                android:textSize="48sp" />
+        </LinearLayout>
+
+        <!-- 사진 선택 텍스트 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사진 선택"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- 안내 메시지 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFF9C4"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- 웃는 얼굴 아이콘 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="24sp"
+            android:layout_marginEnd="12dp" />
+
+        <!-- 안내 텍스트 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="사기 사례가 의심되나 확인합니다."
+            android:textSize="16sp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <!-- Spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 갤러리에서 이미지 선택 버튼 (기존 ID 유지) -->
     <Button
         android:id="@+id/btnSelectImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="갤러리에서 이미지 선택하기" />
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="갤러리에서 이미지 선택하기"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="#4CAF50"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
 </LinearLayout>

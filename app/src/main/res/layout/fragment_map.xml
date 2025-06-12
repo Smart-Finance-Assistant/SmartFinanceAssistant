@@ -1,7 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/map_fragment"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:elevation="4dp">
+
+        <!-- 뒤로가기 버튼 -->
+        <LinearLayout
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/back_button_background"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←"
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!-- 제목 -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="지도 보기"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center" />
+
+        <!-- 하트 아이콘 (선택사항) -->
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/heart_button_background"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="♥"
+                android:textSize="18sp"
+                android:textColor="#FF6B9D" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 안내 메시지 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF3CD"
+        android:padding="12dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="보이스피싱 지원 주의 필요!"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#856404" />
+    </LinearLayout>
+
+    <!-- 지도 영역 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Google Map Fragment -->
+        <fragment
+            android:id="@+id/map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 현재 위치 버튼 (오른쪽 하단) -->
+        <LinearLayout
+            android:id="@+id/btn_my_location"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:background="@drawable/location_button_background"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📍"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 하단 안내 메시지 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFE4E1"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘도 금융 사기 조심하세요!"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#8B0000" />
+    </LinearLayout>
+
+</LinearLayout>

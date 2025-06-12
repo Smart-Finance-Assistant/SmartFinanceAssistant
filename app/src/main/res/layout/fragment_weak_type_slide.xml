@@ -1,24 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="#A8E6CF"
+    android:orientation="vertical"
+    android:padding="20dp">
 
+    <!-- 상단 유형 제목 -->
     <TextView
-        android:id="@+id/typeTextView"
-        android:text="취약 유형"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/finishButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="홈으로"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="취약 유형 사례"
+        android:textColor="#2C5F4E"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- 메인 사례 카드 -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <!-- 유형 제목 및 아이콘 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!-- 유형별 아이콘 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/iconContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FFE4E6"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/typeIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📞"
+                            android:textSize="32sp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- 유형 이름 -->
+                <TextView
+                    android:id="@+id/typeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="보이스피싱"
+                    android:textColor="#FF4757"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 사례 목록 스크롤 -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/casesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- 사례들이 동적으로 추가됨 -->
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <!-- 홈으로 버튼 (마지막 슬라이드에만 표시) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/finishButtonCard"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="4dp">
+
+                <Button
+                    android:id="@+id/finishButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#4CAF50"
+                    android:text="홈으로"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

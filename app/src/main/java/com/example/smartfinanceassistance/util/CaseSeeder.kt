@@ -29,11 +29,11 @@ object CaseSeeder {
             CaseEntity(type = "메신저 피싱", content = "연인 사칭으로 생활비 명목 피해"),
 
             // 보이스피싱 (5개)
-            CaseEntity(type = "보이스 피싱", content = "경찰 사칭 전화로 안전계좌 이체 요구"),
-            CaseEntity(type = "보이스 피싱", content = "검찰청 사칭으로 수사협조 명목 사기"),
-            CaseEntity(type = "보이스 피싱", content = "금융감독원 사칭 계좌조사 명목 피해"),
-            CaseEntity(type = "보이스 피싱", content = "국정원 사칭 국가기밀 누설 협박"),
-            CaseEntity(type = "보이스 피싱", content = "은행 직원 사칭 대출 명목 개인정보 탈취")
+            CaseEntity(type = "보이스피싱", content = "경찰 사칭 전화로 안전계좌 이체 요구"),
+            CaseEntity(type = "보이스피싱", content = "검찰청 사칭으로 수사협조 명목 사기"),
+            CaseEntity(type = "보이스피싱", content = "금융감독원 사칭 계좌조사 명목 피해"),
+            CaseEntity(type = "보이스피싱", content = "국정원 사칭 국가기밀 누설 협박"),
+            CaseEntity(type = "보이스피싱", content = "은행 직원 사칭 대출 명목 개인정보 탈취")
         )
     }
 }

@@ -31,13 +31,10 @@
             android:id="@+id/action_homeFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
 
-<!--        <action-->
-<!--            android:id="@+id/action_homeFragment_to_casesFragment"-->
-<!--            app:destination="@id/casesFragment" />-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_homeFragment_to_analysisFragment"-->
-<!--            app:destination="@id/analysisFragment" />-->
+        <!-- 🆕 게시판으로 이동 -->
+        <action
+            android:id="@+id/action_homeFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
     </fragment>
 
     <!-- destination 프래그먼트들 -->
@@ -129,14 +126,66 @@
         android:id="@+id/mapFragment"
         android:name="com.example.smartfinanceassistance.externalApp.MapFragment"
         android:label="지도" />
+
+    <!-- 🆕 게시판 관련 Fragment들 -->
+    <fragment
+        android:id="@+id/boardListFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardListFragment"
+        android:label="게시판">
+
+        <action
+            android:id="@+id/action_boardListFragment_to_boardWriteFragment"
+            app:destination="@id/boardWriteFragment" />
+
+        <action
+            android:id="@+id/action_boardListFragment_to_boardDetailFragment"
+            app:destination="@id/boardDetailFragment">
+            <argument
+                android:name="postId"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardWriteFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardWriteFragment"
+        android:label="글쓰기">
+
+        <!-- 글쓰기 완료 후 목록으로 -->
+        <action
+            android:id="@+id/action_boardWriteFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
+
+        <!-- 수정 모드일 때 사용할 argument -->
+        <argument
+            android:name="postId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardDetailFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardDetailFragment"
+        android:label="게시글 보기">
+
+        <argument
+            android:name="postId"
+            app:argType="string" />
+
+        <!-- 상세보기에서 수정으로 -->
+        <action
+            android:id="@+id/action_boardDetailFragment_to_boardWriteFragment"
+            app:destination="@id/boardWriteFragment">
+            <argument
+                android:name="postId"
+                app:argType="string" />
+        </action>
+
+        <!-- 상세보기에서 목록으로 -->
+        <action
+            android:id="@+id/action_boardDetailFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
+    </fragment>
+
 </navigation>
-
-<!--    <fragment-->
-<!--        android:id="@+id/casesFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.cases.CasesFragment"-->
-<!--        android:label="사례" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/analysisFragment"-->
-<!--        android:name="com.example.smartfinanceassistance.ui.analysis.AnalysisFragment"-->
-<!--        android:label="분석" />-->
