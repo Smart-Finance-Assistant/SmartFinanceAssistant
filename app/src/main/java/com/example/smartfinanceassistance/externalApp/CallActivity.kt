@@ -5,32 +5,30 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.smartfinanceassistance.R
 
 class CallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_call)
 
-        // layout 없이 다이얼로그만 띄우고 전화 실행
-        showCallChoiceDialog()
+        // 버튼 클릭 리스너 설정
+        setupClickListeners()
     }
 
-    private fun showCallChoiceDialog() {
-        val items = arrayOf("112 (경찰)", "1332 (금융감독원)")
+    private fun setupClickListeners() {
+        // 금융감독원 카드 클릭
+        findViewById<View>(R.id.btn_call_fss).setOnClickListener {
+            dialPhoneNumber(this, "1332")
+        }
 
-        AlertDialog.Builder(this)
-            .setTitle("전화 연결 대상 선택")
-            .setItems(items) { _, which ->
-                val number = if (which == 0) "112" else "1332"
-                dialPhoneNumber(this, number)
-            }
-            .setNegativeButton("취소") { _, _ ->
-                finish()
-            }
-            .setCancelable(false)
-            .show()
+        // 경찰서 카드 클릭
+        findViewById<View>(R.id.btn_call_police).setOnClickListener {
+            dialPhoneNumber(this, "112")
+        }
     }
 
     private fun dialPhoneNumber(context: Context, phoneNumber: String) {
@@ -42,8 +40,7 @@ class CallActivity : AppCompatActivity() {
             context.startActivity(intent)
         } catch (e: Exception) {
             Log.e("PhoneIntent", "전화 앱 실행 오류: ${e.localizedMessage}")
-        } finally {
-            finish() // 전화 앱 넘어가도 이 액티비티는 종료
         }
+        // finish()를 제거하여 화면이 유지되도록 함
     }
 }

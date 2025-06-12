@@ -1,21 +1,19 @@
+// OCRProcessingActivity.kt
 package com.example.smartfinanceassistance.image_analysis
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.smartfinanceassistance.R
+import com.example.smartfinanceassistance.MainActivity
 import com.example.smartfinanceassistance.databinding.ActivityOcrProcessingBinding
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions
 import com.google.mlkit.vision.text.TextRecognition
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -25,6 +23,7 @@ import java.io.IOException
 class OCRProcessingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOcrProcessingBinding
+    private var currentImageUri: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,42 +31,68 @@ class OCRProcessingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val imageUri = intent.getStringExtra("image_uri") ?: return
+        currentImageUri = imageUri
+
         val bitmap = getBitmapFromUri(Uri.parse(imageUri))
         binding.imageView.setImageBitmap(bitmap)
 
-        // OCR 처리
-        recognizeTextWithMLKit(bitmap)
+        // 🔧 버튼 클릭 리스너 추가
+        setupButtonListeners()
+
+        runTextRecognition(bitmap)
+    }
+
+    // 🆕 버튼 이벤트 설정
+    private fun setupButtonListeners() {
+        // 다시 분석 버튼
+        binding.btnRetry.setOnClickListener {
+            // 갤러리 선택 화면으로 돌아가기
+            val intent = Intent(this, GallerySelectActivity::class.java)
+            startActivity(intent)
+            finish() // 현재 액티비티 종료
+        }
+
+        // 홈으로 버튼
+        binding.btnHome.setOnClickListener {
+            // 메인 액티비티로 이동
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish() // 현재 액티비티 종료
+        }
     }
 
     private fun getBitmapFromUri(uri: Uri): Bitmap {
-        val original = if (Build.VERSION.SDK_INT >= 29) {
+        val original = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(contentResolver, uri)
             ImageDecoder.decodeBitmap(source)
         } else {
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
         }
-
         return original.copy(Bitmap.Config.ARGB_8888, true)
     }
 
-    private fun recognizeTextWithMLKit(bitmap: Bitmap) {
+    private fun runTextRecognition(bitmap: Bitmap) {
+        // 🔄 분석 시작 시 UI 업데이트
+        binding.textViewResult.text = "이미지 분석 중..."
+
         val recognizer = TextRecognition.getClient(KoreanTextRecognizerOptions.Builder().build())
         val image = InputImage.fromBitmap(bitmap, 0)
 
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
-                val extractedText = visionText.text.trim()
-                binding.textViewResult.text = if (extractedText.isEmpty()) {
-                    "❗ 텍스트를 인식할 수 없습니다."
-                } else {
-                    extractedText
+                val result = visionText.text
+
+                if (result.isEmpty()) {
+                    binding.textViewResult.text = "📋 텍스트를 찾을 수 없습니다.\n다른 이미지를 선택해보세요."
+                    return@addOnSuccessListener
                 }
-                if (extractedText.isNotEmpty()) {
-                    analyzeWithGroq(extractedText)
-                }
+
+                binding.textViewResult.text = "📝 텍스트 추출 완료!\n분석 중..."
+                analyzeWithGroq(result)
             }
             .addOnFailureListener { e ->
-                binding.textViewResult.text = "OCR 실패: ${e.message}"
+                binding.textViewResult.text = "❌ OCR 실패: ${e.message}\n다시 시도해보세요."
             }
     }
 
@@ -79,33 +104,14 @@ class OCRProcessingActivity : AppCompatActivity() {
             put(JSONObject().apply {
                 put("role", "system")
                 put("content", """
-                    당신은 금융 사기 여부를 판단하는 전문 분석가입니다.
-                    사용자의 메시지를 보고 오직 아래 두 가지 중 하나로 판단해주세요:
-                    
-                    금융 사기는 다음 특징을 가짐:
-                    1. 비현실적 수익 약속 (예: "하루 100% 수익", 키워드: "고수익", "보장", "배당").
-                    2. 긴급 행동 유도 (예: "지금 송금", 키워드: "즉시", "급히", "마감").
-                    3. 개인정보 요구 (예: "계좌번호 입력", 키워드: "계좌", "비밀번호", "신분증").
-                    4. 의심스러운 링크/연락처 (예: 단축 URL처럼 "bit.ly/abc123", 비표준 도메인 ".xyz", 전화번호 "010-XXXX-XXXX", 카카오톡 ID 요청, 문맥상 "여기 클릭" 같은 유도 문구 포함).
-                    5. 모호한 출처 (예: "공식 기관", 출처 불명확).
-
-                    사기 아님은 다음 경우:
-                    1. 일상적 대화 (금융 언급 없음, 예: 친구 간 대화).
-                    2. 공식 출처의 광고/공지 (예: "국민은행 공식 사이트 https://www.kbstar.com", 기관명 명시, 비현실적 약속 없음, HTTPS 링크, 표준 문구 사용).
-                    3. 금융 관련이지만 안전 (예: 카드 명세서, 결제 알림, 개인정보 요구 없음).
-                    4. 링크 포함 시, 공식 기관명(예: "국민은행", "삼성카드" 등)과 HTTPS 링크가 문맥상 일치함.
-
-                    출력 형식:
-                    ```
-                    결과: [사기 아님 / 사기 의심 됨]
-                    이유: [텍스트에서 발견된 증거 또는 사기 특징 없는 이유]
-                    ```
-                    한글로 대답해.
-                   
-                    메시지 형식이 문자/카톡/이메일/알림/웹 등 무엇이든 위 기준을 동일하게 적용하세요.
-                    판단이 모호할 경우, 사기로 간주하여 보수적으로 판단하십시오.
-                    """.trimIndent())
-                })
+                    다음 텍스트가 금융 사기인지 판단해줘. 금융 사기는 다음과 같은 특징을 가질 수 있어:
+                    - 비현실적인 수익이나 혜택 약속 (예: "하루 만에 100% 수익 보장")
+                    - 긴급한 행동 유도 (예: "지금 바로 송금해야 함")
+                    - 개인정보 요구 (예: 계좌번호, 비밀번호)
+                    - 의심스러운 링크나 연락처 제공
+                    텍스트가 금융 사기인지 아닌지 명확히 판단하고, 한글로 대답해. 판단 이유를 구체적으로 설명하고, 애매한 경우에는 그 이유도 명시해.
+                """)
+            })
             put(JSONObject().apply {
                 put("role", "user")
                 put("content", resultText)
@@ -127,7 +133,7 @@ class OCRProcessingActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    binding.aiResultText.text = "API 호출 실패: ${e.message}"
+                    binding.textViewResult.text = "🌐 네트워크 오류: ${e.message}\n인터넷 연결을 확인해주세요."
                 }
             }
 
@@ -135,7 +141,7 @@ class OCRProcessingActivity : AppCompatActivity() {
                 val body = response.body?.string()
                 if (!response.isSuccessful || body == null) {
                     runOnUiThread {
-                        binding.aiResultText.text = "응답 오류: $body"
+                        binding.textViewResult.text = "⚠️ 서버 응답 오류\n잠시 후 다시 시도해주세요."
                     }
                     return
                 }
@@ -148,39 +154,20 @@ class OCRProcessingActivity : AppCompatActivity() {
                         .getString("content")
 
                     runOnUiThread {
-                        binding.aiResultText.text = message
-                        updateResultIcon(message)
+                        // 🎨 결과에 따라 아이콘 추가
+                        val resultWithIcon = when {
+                            message.contains("사기") || message.contains("위험") -> "⚠️ $message"
+                            message.contains("정상") || message.contains("안전") -> "✅ $message"
+                            else -> "🔍 $message"
+                        }
+                        binding.textViewResult.text = resultWithIcon
                     }
                 } catch (e: Exception) {
                     runOnUiThread {
-                        binding.aiResultText.text = "응답 파싱 오류: ${e.message}"
+                        binding.textViewResult.text = "📊 분석 완료!\n결과 처리 중 오류가 발생했습니다."
                     }
                 }
             }
         })
-    }
-
-    private fun updateResultIcon(message: String) {
-        val iconView = binding.resultIcon
-        val aiResultText = binding.aiResultText
-
-        val lines = message.lines()
-        val firstLine = lines.firstOrNull()?.lowercase()?.trim() ?: ""
-
-        aiResultText.text = message  // 전체 결과는 항상 표시
-
-        when {
-            firstLine.contains("사기 아님") -> {
-                iconView.setImageResource(R.drawable.ic_check_green)
-                iconView.visibility = ImageView.VISIBLE
-            }
-            firstLine.contains("사기 의심") -> {
-                iconView.setImageResource(R.drawable.ic_warning_red)
-                iconView.visibility = ImageView.VISIBLE
-            }
-            else -> {
-                iconView.visibility = ImageView.GONE
-            }
-        }
     }
 }
