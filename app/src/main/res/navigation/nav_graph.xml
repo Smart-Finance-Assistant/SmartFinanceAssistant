@@ -2,19 +2,190 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/quizFragment">
+    app:startDestination="@id/homeFragment">
 
+    <!-- 홈 화면 -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.smartfinanceassistance.ui.main.HomeFragment"
+        android:label="홈">
+
+        <!-- 홈에서 이동 가능한 모든 destination 연결 -->
+        <action
+            android:id="@+id/action_homeFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_casesFragment"
+            app:destination="@id/caseTypeListFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_weakTypeAnalysisFragment"
+            app:destination="@id/weakTypeAnalysisFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+
+        <!-- 🆕 게시판으로 이동 -->
+        <action
+            android:id="@+id/action_homeFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
+    </fragment>
+
+    <!-- destination 프래그먼트들 -->
     <fragment
         android:id="@+id/quizFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.QuizFragment"
-        android:label="Quiz" >
+        android:label="Quiz">
+        <!-- 퀴즈 다 풀면 자동으로 이동-->
         <action
             android:id="@+id/action_quizFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
     </fragment>
 
+    <!-- 🔽 결과 화면 (중복 제거하고 하나로 통합) -->
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.smartfinanceassistance.ui.quiz.ResultFragment"
-        android:label="Result" />
+        android:label="Result">
+
+        <action
+            android:id="@+id/action_resultFragment_to_weakTypePagerFragment"
+            app:destination="@id/weakTypePagerFragment" />
+
+        <action
+            android:id="@+id/action_resultFragment_to_weakTypeAnalysisFragment"
+            app:destination="@id/weakTypeAnalysisFragment" />
+
+        <action
+            android:id="@+id/action_resultFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weakTypePagerFragment"
+        android:name="com.example.smartfinanceassistance.ui.quiz.WeakTypePagerFragment"
+        android:label="취약 유형 슬라이드">
+        <argument
+            android:name="weakTypes"
+            app:argType="string[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_weakTypePagerFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/caseTypeListFragment"
+        android:name="com.example.smartfinanceassistance.ui.cases.CaseTypeListFragment"
+        android:label="유형 선택">
+        <action
+            android:id="@+id/action_caseTypeListFragment_to_caseListFragment"
+            app:destination="@id/caseListFragment">
+            <argument
+                android:name="caseType"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/caseListFragment"
+        android:name="com.example.smartfinanceassistance.ui.cases.CaseListFragment"
+        android:label="사례 리스트">
+        <argument
+            android:name="caseType"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_caseListFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <!-- 🔽 취약 유형 분석 화면 (패키지 경로 수정) -->
+    <fragment
+        android:id="@+id/weakTypeAnalysisFragment"
+        android:name="com.example.smartfinanceassistance.ui.analysis.WeakTypeAnalysisFragment"
+        android:label="내 취약유형 분석">
+
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_caseListFragment"
+            app:destination="@id/caseListFragment" />
+
+        <action
+            android:id="@+id/action_weakTypeAnalysisFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.smartfinanceassistance.externalApp.MapFragment"
+        android:label="지도" />
+
+    <!-- 🆕 게시판 관련 Fragment들 -->
+    <fragment
+        android:id="@+id/boardListFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardListFragment"
+        android:label="게시판">
+
+        <action
+            android:id="@+id/action_boardListFragment_to_boardWriteFragment"
+            app:destination="@id/boardWriteFragment" />
+
+        <action
+            android:id="@+id/action_boardListFragment_to_boardDetailFragment"
+            app:destination="@id/boardDetailFragment">
+            <argument
+                android:name="postId"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardWriteFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardWriteFragment"
+        android:label="글쓰기">
+
+        <!-- 글쓰기 완료 후 목록으로 -->
+        <action
+            android:id="@+id/action_boardWriteFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
+
+        <!-- 수정 모드일 때 사용할 argument -->
+        <argument
+            android:name="postId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardDetailFragment"
+        android:name="com.example.smartfinanceassistance.ui.board.BoardDetailFragment"
+        android:label="게시글 보기">
+
+        <argument
+            android:name="postId"
+            app:argType="string" />
+
+        <!-- 상세보기에서 수정으로 -->
+        <action
+            android:id="@+id/action_boardDetailFragment_to_boardWriteFragment"
+            app:destination="@id/boardWriteFragment">
+            <argument
+                android:name="postId"
+                app:argType="string" />
+        </action>
+
+        <!-- 상세보기에서 목록으로 -->
+        <action
+            android:id="@+id/action_boardDetailFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
+    </fragment>
+
 </navigation>
