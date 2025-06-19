@@ -144,7 +144,7 @@ class OCRProcessingActivity : AppCompatActivity() {
 
         val request = Request.Builder()
             .url("https://api.groq.com/openai/v1/chat/completions")
-            .addHeader("Authorization", "Bearer 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")
+            .addHeader("Authorization", "Bearer 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")
             .addHeader("Content-Type", "application/json")
             .post(bodyJson.toString().toRequestBody(mediaType))
             .build()
