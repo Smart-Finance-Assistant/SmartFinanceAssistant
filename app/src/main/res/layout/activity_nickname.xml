@@ -97,14 +97,6 @@
         android:layout_marginBottom="40dp"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="💡 닉네임은 나중에 변경할 수 있습니다"
-            android:textColor="#999999"
-            android:textSize="14sp" />
-
     </LinearLayout>
 
 </RelativeLayout>
