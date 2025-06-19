@@ -1,30 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:background="#F8F9FA">
 
-    <TextView
-        android:id="@+id/textViewPrompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="닉네임을 입력하세요"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
-
-    <EditText
-        android:id="@+id/editTextNickname"
+    <!-- 상단 웰컴 카드 -->
+    <LinearLayout
+        android:id="@+id/welcomeCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="닉네임"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/welcome_card_background"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:elevation="2dp">
 
-    <Button
-        android:id="@+id/buttonStart"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="안녕하세요! 👋"
+            android:textColor="#333333"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="스마트 금융 도우미를 시작해보세요!"
+            android:textColor="#666666"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- 닉네임 입력 카드 -->
+    <LinearLayout
+        android:id="@+id/inputCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="시작하기" />
-</LinearLayout>
+        android:layout_below="@id/welcomeCard"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/input_card_background"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:elevation="4dp">
+
+        <!-- 닉네임 라벨 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닉네임을 입력하세요"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 닉네임 입력 필드 -->
+        <EditText
+            android:id="@+id/editTextNickname"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="닉네임"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:background="@drawable/input_field_background"
+            android:layout_marginBottom="24dp"
+            android:textColorHint="#999999" />
+
+        <!-- 시작하기 버튼 -->
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="시작하기"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/button_background"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <!-- 하단 도움말 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💡 닉네임은 나중에 변경할 수 있습니다"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

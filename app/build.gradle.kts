@@ -56,7 +56,7 @@ dependencies {
     // google ml kit
     implementation ("com.google.mlkit:text-recognition-korean:16.0.1")
     implementation ("androidx.cardview:cardview:1.0.0")
-
+    implementation ("com.google.android.material:material:1.10.0")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation(libs.androidx.navigation.fragment.ktx)
