@@ -23,7 +23,9 @@ class NicknameActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val savedNickname = prefs.getString("nickname", null)
         if (savedNickname != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("nickname", savedNickname) // 닉네임 전달
+            startActivity(intent)
             finish()
         }
 
@@ -49,7 +51,9 @@ class NicknameActivity : AppCompatActivity() {
                         .document(nickname)
                         .set(mapOf("createdAt" to System.currentTimeMillis()))
 
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("nickname", nickname) // 닉네임 전달
+                    startActivity(intent)
                     finish()
                 }
             }
