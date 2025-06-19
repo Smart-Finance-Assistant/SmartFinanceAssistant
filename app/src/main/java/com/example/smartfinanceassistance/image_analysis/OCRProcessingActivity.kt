@@ -9,11 +9,16 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.smartfinanceassistance.MainActivity
 import com.example.smartfinanceassistance.databinding.ActivityOcrProcessingBinding
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions
 import com.google.mlkit.vision.text.TextRecognition
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.tasks.await
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -24,6 +29,7 @@ class OCRProcessingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOcrProcessingBinding
     private var currentImageUri: String? = null
+    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +42,16 @@ class OCRProcessingActivity : AppCompatActivity() {
         val bitmap = getBitmapFromUri(Uri.parse(imageUri))
         binding.imageView.setImageBitmap(bitmap)
 
-        // 🔧 버튼 클릭 리스너 추가
+        // 버튼 클릭 리스너 추가
         setupButtonListeners()
 
-        runTextRecognition(bitmap)
+        // Coroutine으로 텍스트 인식 시작
+        lifecycleScope.launch {
+            runTextRecognition(bitmap)
+        }
     }
 
-    // 🆕 버튼 이벤트 설정
+    // 버튼 이벤트 설정
     private fun setupButtonListeners() {
         // 다시 분석 버튼
         binding.btnRetry.setOnClickListener {
@@ -72,33 +81,64 @@ class OCRProcessingActivity : AppCompatActivity() {
         return original.copy(Bitmap.Config.ARGB_8888, true)
     }
 
-    private fun runTextRecognition(bitmap: Bitmap) {
-        // 🔄 분석 시작 시 UI 업데이트
-        binding.textViewResult.text = "이미지 분석 중..."
+    private suspend fun runTextRecognition(bitmap: Bitmap) {
+        try {
+            // 분석 시작 시 UI 업데이트
+            binding.textViewResult.text = "이미지 분석 중..."
 
-        val recognizer = TextRecognition.getClient(KoreanTextRecognizerOptions.Builder().build())
-        val image = InputImage.fromBitmap(bitmap, 0)
+            val recognizer = TextRecognition.getClient(KoreanTextRecognizerOptions.Builder().build())
+            val image = InputImage.fromBitmap(bitmap, 0)
 
-        recognizer.process(image)
-            .addOnSuccessListener { visionText ->
-                val result = visionText.text
-
-                if (result.isEmpty()) {
-                    binding.textViewResult.text = "📋 텍스트를 찾을 수 없습니다.\n다른 이미지를 선택해보세요."
-                    return@addOnSuccessListener
-                }
-
-                binding.textViewResult.text = "📝 텍스트 추출 완료!\n분석 중..."
-                analyzeWithGroq(result)
+            // ML Kit의 비동기 작업을 Coroutine으로 변환
+            val visionText = withContext(Dispatchers.Default) {
+                recognizer.process(image).await()
             }
-            .addOnFailureListener { e ->
-                binding.textViewResult.text = "❌ OCR 실패: ${e.message}\n다시 시도해보세요."
+
+            val result = visionText.text
+
+            if (result.isEmpty()) {
+                binding.textViewResult.text = "📋 텍스트를 찾을 수 없습니다.\n다른 이미지를 선택해보세요."
+                return
             }
+
+            binding.textViewResult.text = "📝 텍스트 추출 완료!\n분석 중..."
+
+            // Groq API 분석 실행
+            analyzeWithGroq(result)
+
+        } catch (e: Exception) {
+            binding.textViewResult.text = "❌ OCR 실패: ${e.message}\n다시 시도해보세요."
+        }
     }
 
     private fun analyzeWithGroq(resultText: String) {
-        val client = OkHttpClient()
+        lifecycleScope.launch {
+            try {
+                val analysisResult = withContext(Dispatchers.IO) {
+                    performGroqAnalysis(resultText)
+                }
+
+                // UI 업데이트는 메인 스레드에서
+                val resultWithIcon = when {
+                    analysisResult.contains("사기") || analysisResult.contains("위험") -> "⚠️ $analysisResult"
+                    analysisResult.contains("정상") || analysisResult.contains("안전") -> "✅ $analysisResult"
+                    else -> "🔍 $analysisResult"
+                }
+                binding.textViewResult.text = resultWithIcon
+
+            } catch (e: IOException) {
+                binding.textViewResult.text = "🌐 네트워크 오류: ${e.message}\n인터넷 연결을 확인해주세요."
+            } catch (e: Exception) {
+                binding.textViewResult.text = "📊 분석 완료!\n결과 처리 중 오류가 발생했습니다."
+            }
+        }
+    }
+
+    private suspend fun performGroqAnalysis(resultText: String): String {
         val mediaType = "application/json".toMediaType()
+
+        // 네트워크 연결 확인을 위한 로그 추가
+        android.util.Log.d("OCR", "Groq API 호출 시작")
 
         val messagesArray = org.json.JSONArray().apply {
             put(JSONObject().apply {
@@ -149,44 +189,26 @@ class OCRProcessingActivity : AppCompatActivity() {
             .post(bodyJson.toString().toRequestBody(mediaType))
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                runOnUiThread {
-                    binding.textViewResult.text = "🌐 네트워크 오류: ${e.message}\n인터넷 연결을 확인해주세요."
-                }
-            }
+        android.util.Log.d("OCR", "요청 URL: ${request.url}")
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                if (!response.isSuccessful || body == null) {
-                    runOnUiThread {
-                        binding.textViewResult.text = "⚠️ 서버 응답 오류\n잠시 후 다시 시도해주세요."
-                    }
-                    return
-                }
+        val response = client.newCall(request).execute()
+        android.util.Log.d("OCR", "응답 코드: ${response.code}")
 
-                try {
-                    val message = JSONObject(body)
-                        .getJSONArray("choices")
-                        .getJSONObject(0)
-                        .getJSONObject("message")
-                        .getString("content")
+        val body = response.body?.string()
 
-                    runOnUiThread {
-                        // 🎨 결과에 따라 아이콘 추가
-                        val resultWithIcon = when {
-                            message.contains("사기") || message.contains("위험") -> "⚠️ $message"
-                            message.contains("정상") || message.contains("안전") -> "✅ $message"
-                            else -> "🔍 $message"
-                        }
-                        binding.textViewResult.text = resultWithIcon
-                    }
-                } catch (e: Exception) {
-                    runOnUiThread {
-                        binding.textViewResult.text = "📊 분석 완료!\n결과 처리 중 오류가 발생했습니다."
-                    }
-                }
-            }
-        })
+        if (!response.isSuccessful || body == null) {
+            android.util.Log.e("OCR", "API 응답 실패: ${response.code}, ${response.message}")
+            throw IOException("서버 응답 오류: ${response.code}")
+        }
+
+        return try {
+            JSONObject(body)
+                .getJSONArray("choices")
+                .getJSONObject(0)
+                .getJSONObject("message")
+                .getString("content")
+        } catch (e: Exception) {
+            throw Exception("응답 파싱 오류: ${e.message}")
+        }
     }
 }
